@@ -1,0 +1,68 @@
+<!DOCTYPE html><html>
+<head>
+<meta name="viewport"
+content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="./dummy-favicon.png">
+</head>
+<body>
+  <style>
+  body {
+    margin: 0px;
+  }
+  a {
+    color: #fefdfdbd;
+    text-decoration: none;
+  }
+  a:active {
+    background-color: #009688;
+  }
+  a:visited {
+    color: #fefdfdbd;
+  }
+  .navbar {
+    background-color: #000000cc;
+    border-bottom: 1px solid black;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-around;
+  }
+  .navbar-item {
+    margin: 10px
+  }
+  </style>
+  <header>
+  <div class="navbar">
+    <h2 class="navbar-item">
+      <a href="#About">About</a>
+    </h2>
+    <h2 class="navbar-item">
+      <a href="#Control">Control</a>
+    </h2>
+    <h2 class="navbar-item">
+      <a href="#Setup">Setup</a>
+    </h2>
+  </div>
+  </header>
+  <h2>Device Control</h2>
+  <div>
+  <h4>Switch</h4>
+  <button onclick="onOff('on')">ON</button>
+  <button onclick="onOff('off')">OFF</button>
+  </div>
+  <div>
+  <script>
+  let debounce = (callback, timeout=300) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => { callback.apply(this, args); }, timeout);
+    }
+  }
+
+  let onOff = debounce(async(val) => {
+    console.log(`local command - switch=${val}`);
+    await fetch(`/control?switch=${val}`);
+  });
+  </script>
+</body>
+</html>
