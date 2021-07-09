@@ -15,20 +15,8 @@ import usocket as socket
 import machine
 
 import public as views
+from ucap.request import Request
 
-class Request:
-    # Request class to provide
-    # clean interface to incoming
-    # HTTP requests.
-    #   ::param status: str
-    #       First line
-    #       of the HTTP Request
-    #   ::param headers: dict
-    #       Headers of incoming
-    #       HTTP Request
-    def __init__(self, status: str, headers: dict):
-        self.status = status
-        self.headers = headers
 
 class Server:
     # HTTP Server on top of the
@@ -51,40 +39,6 @@ class Server:
             print('socket error', e)
             machine.reset()
 
-    @staticmethod
-    def parsehttp(payload):
-        # HTTP Request parser that
-        # takes the string payload
-        # and returns a Request
-        # object for ease of use of
-        # HTTP requests.
-        lines = payload.splitlines()
-
-        headers = {}
-        for i in range( len(lines[1:])-1 ):
-            h = lines[i+1].split(': ')
-            headers[h[0].lower()] = h[1]
-
-        status = lines[0]
-        return Request(status, headers)
-
-    @staticmethod
-    def route(conn, req):
-        # Route requests based on
-        # the supported device
-        # resources.
-        print(req.status)
-        if '/about' in req.status:
-            print('FIXME: HANDLE /about')
-        elif '/control' in req.status:
-            print('FIXME: HANDLE /control')
-        elif '/setup' in req.status:
-            print('FIXME: HANDLE /setup')
-        elif '/favicon.ico' in req.status:
-            conn.send(views.index)
-        conn.send(views.index)
-        conn.close()
-
     async def listen(self):
         # Coroutine that will
         # listen incoming requests.
@@ -98,6 +52,7 @@ class Server:
             # a Request object separating
             # the status (first line) to
             # ease routing
-            req = self.parsehttp(
-                conn.recv(1024).decode('utf-8'))
-            self.route(conn, req)
+            req = conn.recv(1024).decode('utf-8')
+            request = Request.from_string(req)
+            print(request.__dict__)
+            conn.send(views.index)
