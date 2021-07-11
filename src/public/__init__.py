@@ -15,4 +15,3 @@ with open('./public/index.html') as f:
     index = f.read()
     f = None
 
-gc.mem_free()
