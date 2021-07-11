@@ -15,8 +15,8 @@ import machine
 import network
 import uasyncio as asyncio
 
-import server
-
+from ucap import uCap
+from request import Request
 # For the improvement on
 # the security of these
 # values, this must be encrypted
@@ -28,7 +28,7 @@ _ap_env = dict(
     hidden=0,
     authmode=network.AUTH_WPA_WPA2_PSK)
 
-async def ap_init(event_handler):
+def wifiap_init():
     # Built-in access point service
     # to provide futher network config
     # and device control and monitoring
@@ -38,46 +38,47 @@ async def ap_init(event_handler):
     # is part of the core app features
     # it has been included and started
     # up at main.py as a coroutine.
-    try:
-        ap = network.WLAN(network.AP_IF)
-        ap.config(essid=_ap_env['essid'])
-        ap.config(password=_ap_env['key'])
-        ap.config(max_clients=_ap_env['max_conn'])
-        ap.config(hidden=_ap_env['hidden'])
-        ap.config(authmode=_ap_env['authmode'])
-    except:
-        machine.soft_reset()
-    else:
-        ap.active(1)
+    ap = network.WLAN(network.AP_IF)
+    ap.config(essid=_ap_env['essid'])
+    ap.config(password=_ap_env['key'])
+    ap.config(max_clients=_ap_env['max_conn'])
+    ap.config(hidden=_ap_env['hidden'])
+    ap.config(authmode=_ap_env['authmode'])
+    ap.active(1)
+    ap.active(1)
 
-        noti = 0  # event notification flag
-        while 1:
-            # Actual coroutine loop that
-            # will monitor connections
-            # into the access point and
-            # emit such events.
-            await asyncio.sleep_ms(1000)
-            conn, stas = ap.isconnected(), ap.status('stations')
+async def loop_1():
+    while True:
+        await asyncio.sleep_ms(1000)
+        print('Loop 1')
 
-            if conn and not noti:
-                # new connection that
-                # hasn't beennot notified.
-                event_handler((conn, stas))
-                noti = 1
-            elif not conn and noti:
-                # station disconnected that
-                # was previously notified
-                # when established connection.
-                event_handler((conn, stas))
-                noti = 0
+async def loop_2():
+    while True:
+        await asyncio.sleep_ms(1000)
+        print('Loop 2')
 
 def main():
-    srv = server.Server()
+    wifiap_init()
+    app = uCap()
 
+    # App routes
+    @app.route('/index')
+    def index(req):
+        print(req.__dict__)
+        return ('HTTP/1.1 200 OK\n'+\
+                'Content-Type: text/plain\nContent-Lenght: 15'+\
+                '\n\nHello world!')
+
+    # Initialize event loop
     loop = asyncio.get_event_loop()
-    loop.create_task(ap_init(lambda s: print(s))) # mock event handler
-    loop.create_task(srv.listen())
+
+    # server coro
+    loop.create_task(app.run())
+
+    # initialize loop
     loop.run_forever()
+
 
 if __name__ == '__main__':
     main()
+
