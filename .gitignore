@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# firmware
+esp32-idf4-20210202-v1.14.bin
