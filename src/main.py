@@ -24,7 +24,8 @@ import network
 import uasyncio as asyncio
 
 from ucap import uCap
-from request import Request
+from templates import templates
+
 # For the improvement on
 # the security of these
 # values, this must be encrypted
@@ -53,39 +54,31 @@ def wifiap_init():
     ap.config(hidden=_ap_env['hidden'])
     ap.config(authmode=_ap_env['authmode'])
     ap.active(1)
-    ap.active(1)
-
-async def loop_1():
-    while True:
-        await asyncio.sleep_ms(1000)
-        print('Loop 1')
-
-async def loop_2():
-    while True:
-        await asyncio.sleep_ms(1000)
-        print('Loop 2')
 
 def main():
     wifiap_init()
     app = uCap()
 
-    # App routes
-    @app.route('/index')
-    def index(req):
+    # FIXME: Monkey application route
+    @app.route('/about')
+    def about(req):
         print(req.__dict__)
-        return ('HTTP/1.1 200 OK\n'+\
-                'Content-Type: text/plain\nContent-Lenght: 15'+\
-                '\n\nHello world!')
+        return templates['about']
+
+    # FIXME: Monkey application route
+    @app.route('/setup')
+    def about(req):
+        print(req.__dict__)
+        return templates['setup']
 
     # Initialize event loop
     loop = asyncio.get_event_loop()
 
-    # server coro
+    # Schedule tasks
     loop.create_task(app.run())
 
     # initialize loop
     loop.run_forever()
-
 
 if __name__ == '__main__':
     main()
