@@ -41,13 +41,18 @@ class uCap:
             self.routes[route.encode()] = handler
         return decorator
 
+    @staticmethod
+    async def _send(res, buff):
+        res.write(buff)
+        await res.drain()
+        await res.wait_closed()
+
     async def _invoke_handler(self, res, handler, payload):
         # Resource that invokes the
         # route/endpoint handler registered
         # by the uCap.route decorator.
         handler_response = handler(payload)
-        await res.awrite(handler_response)
-        await res.wait_closed()
+        return await self._send(res, handler_response)
 
     async def _validate_route(self, res, route, payload):
         # Route validator that check
