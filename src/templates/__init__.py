@@ -21,13 +21,11 @@
 # THE SOFTWARE.
 import uos as os
 
-try:
-    templates = os.listdir('./public')
-except OSError as e:
-    print('no "./templates" directory')
-else:
+templates = {}
+files = os.listdir('./templates')
 
-with open('./public/index.html') as f:
-    index = f.read()
-    f = None
+for path in files:
+    if path.endswith('.html'):
+        with open('./templates/' + path) as f:
+            templates[path.replace('.html','')] = f.readlines()
 
