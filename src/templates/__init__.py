@@ -19,7 +19,13 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-with open('./public/index.html') as f:
-    index = f.read()
-    f = None
+import uos as os
+
+templates = {}
+files = os.listdir('./templates')
+
+for path in files:
+    if path.endswith('.html'):
+        with open('./templates/' + path) as f:
+            templates[path.replace('.html','')] = f.readlines()
 

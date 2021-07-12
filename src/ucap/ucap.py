@@ -20,8 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 import uasyncio as asyncio
-from request import Request
 
+# local modules
+from ucap.request import Request
 
 class uCap:
     def __init__(self):
@@ -41,13 +42,32 @@ class uCap:
             self.routes[route.encode()] = handler
         return decorator
 
+    @staticmethod
+    async def _send(res, buff):
+        # FIXME: Implement Response.ok_200(buff)
+        # which will handle join of HTTP Status
+        # and headers.
+        _status = [res.write(l) for l in [
+            'HTTP/1.1 200 OK\n',
+            'Content-Type: text/html\n',
+            'Content-Lenght: ' + str(len(''.join(buff))),
+            '\n\n']]
+        if type(buff) is list:
+            [res.write(ln) for ln in buff]
+        else:
+            # FIXME: Handle json respones
+            # for third party integrations
+            # supporting JSON over HTTP.
+            pass
+        await res.drain()
+        await res.wait_closed()
+
     async def _invoke_handler(self, res, handler, payload):
         # Resource that invokes the
         # route/endpoint handler registered
         # by the uCap.route decorator.
         handler_response = handler(payload)
-        await res.awrite(handler_response)
-        await res.wait_closed()
+        return await self._send(res, handler_response)
 
     async def _validate_route(self, res, route, payload):
         # Route validator that check
@@ -59,6 +79,7 @@ class uCap:
         #       pass
         handler = self.routes.get(route)
         if not handler:
+            # FIXME: Implement Response.not_found()
             # monkey patch for
             # future default Error
             # response.
