@@ -97,7 +97,7 @@ class Response:
             return payload
         else:
             raise TypeError(
-                f"Received payload:{type(payload)}, expected [dict, str, list]"
+                "Received payload:%s, expected [dict, str, list]" % type(payload)
             )
 
     @staticmethod
