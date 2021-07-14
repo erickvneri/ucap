@@ -71,6 +71,12 @@ def main():
         print(req.__dict__)
         return templates['setup']
 
+    # FIXME: Monkey application route
+    @app.route('/metadata')
+    def metadata(req):
+        print(req.__dict__)
+        return templates['xml_example']
+
     # Initialize event loop
     loop = asyncio.get_event_loop()
 

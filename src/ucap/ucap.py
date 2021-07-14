@@ -23,6 +23,8 @@ import uasyncio as asyncio
 
 # local modules
 from ucap.request import Request
+from ucap.response import Response, StatusEnum
+
 
 class uCap:
     def __init__(self):
@@ -40,25 +42,19 @@ class uCap:
         #       pass
         def decorator(handler):
             self.routes[route.encode()] = handler
+
         return decorator
 
     @staticmethod
-    async def _send(res, buff):
+    async def _send(res, bufflines):
         # FIXME: Implement Response.ok_200(buff)
         # which will handle join of HTTP Status
         # and headers.
-        _status = [res.write(l) for l in [
-            'HTTP/1.1 200 OK\n',
-            'Content-Type: text/html\n',
-            'Content-Lenght: ' + str(len(''.join(buff))),
-            '\n\n']]
-        if type(buff) is list:
-            [res.write(ln) for ln in buff]
-        else:
-            # FIXME: Handle json respones
-            # for third party integrations
-            # supporting JSON over HTTP.
-            pass
+        response = Response(StatusEnum.OK, bufflines)
+
+        # Send response buffer
+        [res.write(ln) for ln in response.lines]
+
         await res.drain()
         await res.wait_closed()
 
@@ -83,10 +79,11 @@ class uCap:
             # monkey patch for
             # future default Error
             # response.
-            error_res = \
-                ('HTTP/1.1 404 Not Found\n'+\
-                'Content-Type: text/plain\n\n'+\
-                'Resource Not Found')
+            error_res = (
+                "HTTP/1.1 404 Not Found\n"
+                + "Content-Type: text/plain\n\n"
+                + "Resource Not Found"
+            )
             await res.awrite(error_res)
             await res.wait_closed()
         else:
@@ -102,11 +99,9 @@ class uCap:
         request = Request.from_string(req)
         await self._validate_route(res, request.route, request)
 
-    def run(self, addr='0.0.0.0', port=80):
+    def run(self, addr="0.0.0.0", port=80):
         # This resourse return the
         # Server class whose handler
         # will be scheduled by the
         # asyncio loop.
-        return asyncio.start_server(
-            self._listen, addr, port)
-
+        return asyncio.start_server(self._listen, addr, port)

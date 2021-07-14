@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+
 class Request:
     # Request interface to provide
     # a clean-as-possible interface
@@ -33,12 +34,14 @@ class Request:
     # ::param protocol: str, often HTTP
     #   version
     def __init__(
-        self, body: str,
-              headers: dict,
-              method: str,
-              path: str,
-              protocol: str,
-              route: str) -> 'Request':
+        self,
+        body: str,
+        headers: dict,
+        method: str,
+        path: str,
+        protocol: str,
+        route: str,
+    ) -> "Request":
         self.body = body
         self.headers = headers or {}
         self.method = method
@@ -46,28 +49,30 @@ class Request:
         self.protocol = protocol
         self.route = route
 
-
     @classmethod
-    def from_string(cls, payload: [bytes, str]) -> 'Request':
+    def from_string(cls, payload: [bytes, str]) -> "Request":
         """
         Parse HTTP Request from raw payload and
         returns a Request object.
         """
-        _colon_sep = b': ' if type(payload) is bytes else ': '
-        _qs_sep = b'?' if type(payload) is bytes else '?'
-        _lnsep = b'\n\n' if type(payload) is bytes else '\n\n'
+        _colon_sep = b": " if type(payload) is bytes else ": "
+        _qs_sep = b"?" if type(payload) is bytes else "?"
+        _lnsep = b"\n\n" if type(payload) is bytes else "\n\n"
 
         # unpack request and body
         req = tuple(payload.split(_lnsep))
-        if len(req) > 1: req, body = req
-        else: req = req[0]; body = None
+        if len(req) > 1:
+            req, body = req
+        else:
+            req = req[0]
+            body = None
 
         # split request string
         lns = req.splitlines()
 
         # unpack request status
         method, path, protocol = tuple(lns[0].split())
-        route = path if path.find(_qs_sep) < 1 else path[:path.find(_qs_sep)]
+        route = path if path.find(_qs_sep) < 1 else path[: path.find(_qs_sep)]
 
         # unpack headers
         headers = {}
@@ -77,11 +82,4 @@ class Request:
                 headers[h[0]] = h[1]
 
         # return Request instance
-        return cls(
-            body,
-            headers,
-            method,
-            path,
-            protocol,
-            route)
-
+        return cls(body, headers, method, path, protocol, route)

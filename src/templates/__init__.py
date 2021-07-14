@@ -22,10 +22,14 @@
 import uos as os
 
 templates = {}
-files = os.listdir('./templates')
+files = os.listdir("./templates")
 
 for path in files:
-    if path.endswith('.html'):
-        with open('./templates/' + path) as f:
-            templates[path.replace('.html','')] = f.readlines()
-
+    ext = ""
+    if not path.endswith(".py"):
+        if path.endswith(".html"):
+            ext = ".html"
+        elif path.endswith(".xml"):
+            ext = ".xml"
+        with open("./templates/" + path) as f:
+            templates[path.replace(ext, "")] = f.readlines()
