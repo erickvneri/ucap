@@ -19,7 +19,14 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+import ujson as json
+
+
 class StatusEnum:
+    # Status code enum that
+    # supports for the most
+    # common and used codes
+    # for XMLHR
     OK = "200 OK"
     CREATED = "201 Created"
     NOT_FOUND = "404 Not Found"
@@ -28,6 +35,9 @@ class StatusEnum:
 
 
 class ContentTypeEnum:
+    # Content type enum supporting
+    # the most common and used
+    # content types for XMLHR
     HTML = "text/html"
     TEXT = "text/plain"
     XML = "application/xml"
@@ -35,13 +45,34 @@ class ContentTypeEnum:
 
 
 class Response:
+    # Response constructor to build
+    # HTTP Responses from a status
+    # code enumerator (StatusEnum)
+    # and the payload as a list of
+    # string lines of the template
+    # Use example:
+    # res = Response(
+    # StatusEnum.OK
+    # {'hello': 'world'})
+    # print(res.lines)
+    # [
+    # 'HTTP/1.1 200 OK\nContent-Type: application/json\nContent-Lenght: 18',
+    # '\n\n',
+    # '{"hello": "world"}'
+    # ]
     def __init__(self, status: StatusEnum, payload: list):
         self.status = "HTTP/1.1 *".replace("*", status)
         self.headers = None
         self.content_type = None
         self.content_length = None
-        self.payload = payload
         self.lines = None
+        # Validate type and integrity
+        # of payload.
+        # Warning:
+        # This isn't an exaustive check,
+        # hence, try passing a proper
+        # payload data as argument
+        self.payload = self.validate_payload(payload)
         self.build()
 
     def build(self):
@@ -55,6 +86,19 @@ class Response:
             ]
         )
         self.lines = [self.headers] + ["\n\n"] + self.payload
+
+    @staticmethod
+    def validate_payload(payload):
+        if type(payload) is dict:
+            return [json.dumps(payload)]
+        elif type(payload) is str:
+            return [payload]
+        elif type(payload) is list:
+            return payload
+        else:
+            raise TypeError(
+                f"Received payload:{type(payload)}, expected [dict, str, list]"
+            )
 
     @staticmethod
     def set_content_type(fline):
