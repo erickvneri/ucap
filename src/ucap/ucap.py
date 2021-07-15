@@ -41,7 +41,7 @@ class uCap:
         #   def handler(req):
         #       pass
         def decorator(handler):
-            self.routes[route.encode()] = handler
+            self.routes[route] = handler
 
         return decorator
 
@@ -96,7 +96,7 @@ class uCap:
         # and parse and pass the Request
         # object into the route validator.
         req = await req.read(1024)
-        request = Request.from_string(req)
+        request = Request.from_string(req.decode())
         await self._validate_route(res, request.route, request)
 
     def run(self, addr="0.0.0.0", port=80):
