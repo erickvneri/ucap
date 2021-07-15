@@ -72,6 +72,9 @@ class Response:
         self.build()
 
     def build(self):
+        # From input, build HTTP Response
+        # and update self.lines as a list
+        # of lines (splitted buffer)
         self.content_type = self.set_content_type(self.payload[0])
         self.content_length = self.set_content_lenght(self.payload)
         self.headers = "\n".join(
@@ -85,6 +88,11 @@ class Response:
 
     @staticmethod
     def validate_payload(payload):
+        # Simple type validation
+        # on the payload to return
+        # it as an item of a list
+        # to be able to iterate while
+        # sending HTTP response.
         if type(payload) is dict:
             return [json.dumps(payload)]
         elif type(payload) is str:
@@ -98,6 +106,9 @@ class Response:
 
     @staticmethod
     def set_content_type(fline):
+        # Returns content type
+        # based on the first line
+        # of the payload buffer
         if "html" in fline:
             return ContentTypeEnum.HTML
         elif "xml" in fline:
@@ -108,4 +119,7 @@ class Response:
 
     @staticmethod
     def set_content_lenght(payload):
+        # Simply returns lenght of
+        # the payload to assign proper
+        # Content-Lenght HTTP header
         return len("".join(payload))
