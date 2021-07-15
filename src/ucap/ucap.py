@@ -39,20 +39,24 @@ class uCap:
         # Use example:
         #   @app.route('/route')
         #   def handler(req):
-        #       pass
+        #       return {'hello': 'world'}, 200
         def decorator(handler):
             self.routes[route] = handler
 
         return decorator
 
     @staticmethod
-    async def _send(res, bufflines):
+    async def _send(res, bufflines, status):
         # FIXME: Implement Response.ok_200(buff)
         # which will handle join of HTTP Status
         # and headers.
-        response = Response(StatusEnum.OK, bufflines)
+        response = Response(status, bufflines)
 
-        # Send response buffer
+        # Send response buffer in lines
+        # Warning:
+        # List comprehension may mean
+        # memory allocation via appending
+        # to a virtual list.
         [res.write(ln) for ln in response.lines]
 
         await res.drain()
@@ -62,8 +66,8 @@ class uCap:
         # Resource that invokes the
         # route/endpoint handler registered
         # by the uCap.route decorator.
-        handler_response = handler(payload)
-        return await self._send(res, handler_response)
+        handler_response, status = handler(payload)
+        return await self._send(res, handler_response, status)
 
     async def _validate_route(self, res, route, payload):
         # Route validator that check
@@ -75,17 +79,12 @@ class uCap:
         #       pass
         handler = self.routes.get(route)
         if not handler:
-            # FIXME: Implement Response.not_found()
-            # monkey patch for
-            # future default Error
+            # FIXME: monkey patch string error
             # response.
-            error_res = (
-                "HTTP/1.1 404 Not Found\n"
-                + "Content-Type: text/plain\n\n"
-                + "Resource Not Found"
-            )
-            await res.awrite(error_res)
-            await res.wait_closed()
+            # In the future this will be handled
+            # by private_templates.html files.
+            error_res = "Monkey patched response"
+            return await self._send(res, error_res, 404)
         else:
             await self._invoke_handler(res, handler, payload)
 
