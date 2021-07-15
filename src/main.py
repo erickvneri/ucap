@@ -66,19 +66,19 @@ def main():
     @app.route("/about")
     def about(req):
         print(req.__dict__)
-        return templates["about"]
+        return templates["about"], 200
 
     # FIXME: Monkey application route
     @app.route("/setup")
     def about(req):
         print(req.__dict__)
-        return templates["setup"]
+        return templates["setup"], 200
 
     # FIXME: Monkey application route
     @app.route("/metadata")
     def metadata(req):
         print(req.__dict__)
-        return templates["xml_example"]
+        return templates["xml_example"], 200
 
     # Initialize event loop
     loop = asyncio.get_event_loop()
