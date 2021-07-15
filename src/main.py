@@ -31,11 +31,13 @@ from templates import templates
 # values, this must be encrypted
 # and decrypted while reading it.
 _ap_env = dict(
-    essid='ESP32-demo',
-    key='dummy-passphrase',
+    essid="ESP32-demo",
+    key="dummy-passphrase",
     max_conn=1,
     hidden=0,
-    authmode=network.AUTH_WPA_WPA2_PSK)
+    authmode=network.AUTH_WPA_WPA2_PSK,
+)
+
 
 def wifiap_init():
     # Built-in access point service
@@ -48,34 +50,35 @@ def wifiap_init():
     # it has been included and started
     # up at main.py as a coroutine.
     ap = network.WLAN(network.AP_IF)
-    ap.config(essid=_ap_env['essid'])
-    ap.config(password=_ap_env['key'])
-    ap.config(max_clients=_ap_env['max_conn'])
-    ap.config(hidden=_ap_env['hidden'])
-    ap.config(authmode=_ap_env['authmode'])
+    ap.config(essid=_ap_env["essid"])
+    ap.config(password=_ap_env["key"])
+    ap.config(max_clients=_ap_env["max_conn"])
+    ap.config(hidden=_ap_env["hidden"])
+    ap.config(authmode=_ap_env["authmode"])
     ap.active(1)
+
 
 def main():
     wifiap_init()
     app = uCap()
 
     # FIXME: Monkey application route
-    @app.route('/about')
+    @app.route("/about")
     def about(req):
         print(req.__dict__)
-        return templates['about']
+        return templates["about"]
 
     # FIXME: Monkey application route
-    @app.route('/setup')
+    @app.route("/setup")
     def about(req):
         print(req.__dict__)
-        return templates['setup']
+        return templates["setup"]
 
     # FIXME: Monkey application route
-    @app.route('/metadata')
+    @app.route("/metadata")
     def metadata(req):
         print(req.__dict__)
-        return templates['xml_example']
+        return templates["xml_example"]
 
     # Initialize event loop
     loop = asyncio.get_event_loop()
@@ -86,6 +89,6 @@ def main():
     # initialize loop
     loop.run_forever()
 
-if __name__ == '__main__':
-    main()
 
+if __name__ == "__main__":
+    main()
