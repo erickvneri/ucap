@@ -21,17 +21,13 @@
 # THE SOFTWARE.
 import ujson as json
 
-
-class StatusEnum:
-    # Status code enum that
-    # supports for the most
-    # common and used codes
-    # for XMLHR
-    OK = "200 OK"
-    CREATED = "201 Created"
-    NOT_FOUND = "404 Not Found"
-    UNAUTHORIZED = "401 Unauthorized"
-    SERVER_ERROR = "500 Internal Server Error"
+StatusEnum = {
+    200: "200 OK",
+    201: "201 Created",
+    404: "404 Not Found",
+    401: "401 Unauthorized",
+    500: "500 Internal Server Error",
+}
 
 
 class ContentTypeEnum:
@@ -61,7 +57,7 @@ class Response:
     # '{"hello": "world"}'
     # ]
     def __init__(self, status: StatusEnum, payload: list):
-        self.status = "HTTP/1.1 *".replace("*", status)
+        self.status = "HTTP/1.1 *".replace("*", StatusEnum[status])
         self.headers = None
         self.content_type = None
         self.content_length = None
