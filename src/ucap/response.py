@@ -21,17 +21,13 @@
 # THE SOFTWARE.
 import ujson as json
 
-
-class StatusEnum:
-    # Status code enum that
-    # supports for the most
-    # common and used codes
-    # for XMLHR
-    OK = "200 OK"
-    CREATED = "201 Created"
-    NOT_FOUND = "404 Not Found"
-    UNAUTHORIZED = "401 Unauthorized"
-    SERVER_ERROR = "500 Internal Server Error"
+StatusEnum = {
+    200: "200 OK",
+    201: "201 Created",
+    404: "404 Not Found",
+    401: "401 Unauthorized",
+    500: "500 Internal Server Error",
+}
 
 
 class ContentTypeEnum:
@@ -60,12 +56,12 @@ class Response:
     # '\n\n',
     # '{"hello": "world"}'
     # ]
-    def __init__(self, status: StatusEnum, payload: list):
-        self.status = "HTTP/1.1 *".replace("*", status)
-        self.headers = None
-        self.content_type = None
+    def __init__(self, status: int, payload: list):
         self.content_length = None
+        self.content_type = None
+        self.headers = None
         self.lines = None
+        self.status = "HTTP/1.1 *".replace("*", StatusEnum[status])
         # Validate type and integrity
         # of payload.
         # Warning:
@@ -76,6 +72,9 @@ class Response:
         self.build()
 
     def build(self):
+        # From input, build HTTP Response
+        # and update self.lines as a list
+        # of lines (splitted buffer)
         self.content_type = self.set_content_type(self.payload[0])
         self.content_length = self.set_content_lenght(self.payload)
         self.headers = "\n".join(
@@ -89,6 +88,11 @@ class Response:
 
     @staticmethod
     def validate_payload(payload):
+        # Simple type validation
+        # on the payload to return
+        # it as an item of a list
+        # to be able to iterate while
+        # sending HTTP response.
         if type(payload) is dict:
             return [json.dumps(payload)]
         elif type(payload) is str:
@@ -102,6 +106,9 @@ class Response:
 
     @staticmethod
     def set_content_type(fline):
+        # Returns content type
+        # based on the first line
+        # of the payload buffer
         if "html" in fline:
             return ContentTypeEnum.HTML
         elif "xml" in fline:
@@ -112,4 +119,7 @@ class Response:
 
     @staticmethod
     def set_content_lenght(payload):
+        # Simply returns lenght of
+        # the payload to assign proper
+        # Content-Lenght HTTP header
         return len("".join(payload))

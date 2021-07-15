@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <root xmlns="urn:schemas-upnp-org:device-1-0">
   <device>
     <deviceType>urn:schemas-upnp-org:device:InternetGatewayDevice:1</deviceType>
     <friendlyName>Ubee EVW3226</friendlyName>
     <serviceList>
       <service>
-        <serviceType>urn:schemas-upnp-org:service:Layer3Forwarding:1</serviceType>
+        <serviceType
+        >urn:schemas-upnp-org:service:Layer3Forwarding:1</serviceType>
         <controlURL>/ctl/L3F</controlURL>
         <eventSubURL>/evt/L3F</eventSubURL>
         <SCPDURL>/L3F.xml</SCPDURL>
@@ -17,7 +18,8 @@
         <friendlyName>WANDevice</friendlyName>
         <serviceList>
           <service>
-            <serviceType>urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1</serviceType>
+            <serviceType
+            >urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1</serviceType>
             <serviceId>urn:upnp-org:serviceId:WANCommonIFC1</serviceId>
             <controlURL>/ctl/CmnIfCfg</controlURL>
             <eventSubURL>/evt/CmnIfCfg</eventSubURL>
@@ -26,11 +28,13 @@
         </serviceList>
         <deviceList>
           <device>
-            <deviceType>urn:schemas-upnp-org:device:WANConnectionDevice:1</deviceType>
+            <deviceType
+            >urn:schemas-upnp-org:device:WANConnectionDevice:1</deviceType>
             <friendlyName>WANConnectionDevice</friendlyName>
             <serviceList>
               <service>
-                <serviceType>urn:schemas-upnp-org:service:WANIPConnection:1</serviceType>
+                <serviceType
+                >urn:schemas-upnp-org:service:WANIPConnection:1</serviceType>
                 <controlURL>/ctl/IPConn</controlURL>
                 <eventSubURL>/evt/IPConn</eventSubURL>
                 <SCPDURL>/WANIPCn.xml</SCPDURL>
