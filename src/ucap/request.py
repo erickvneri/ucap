@@ -51,10 +51,9 @@ class Request:
 
     @classmethod
     def from_string(cls, payload: [bytes, str]) -> "Request":
-        """
-        Parse HTTP Request from raw payload and
-        returns a Request object.
-        """
+        # Parse HTTP Request from raw
+        # payload and returns a Request
+        # object.
         _colon_sep = b": " if type(payload) is bytes else ": "
         _qs_sep = b"?" if type(payload) is bytes else "?"
         _lnsep = b"\n\n" if type(payload) is bytes else "\n\n"
