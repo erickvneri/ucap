@@ -47,9 +47,7 @@ class uCap:
 
     @staticmethod
     async def _send(res, bufflines, status):
-        # FIXME: Implement Response.ok_200(buff)
-        # which will handle join of HTTP Status
-        # and headers.
+        # Build response from input
         response = Response(status, bufflines)
 
         # Send response buffer in lines
@@ -59,6 +57,7 @@ class uCap:
         # to a virtual list.
         [res.write(ln) for ln in response.lines]
 
+        # Drain to actually send response
         await res.drain()
         await res.wait_closed()
 
