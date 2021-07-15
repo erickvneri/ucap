@@ -56,12 +56,12 @@ class Response:
     # '\n\n',
     # '{"hello": "world"}'
     # ]
-    def __init__(self, status: StatusEnum, payload: list):
-        self.status = "HTTP/1.1 *".replace("*", StatusEnum[status])
-        self.headers = None
-        self.content_type = None
+    def __init__(self, status: int, payload: list):
         self.content_length = None
+        self.content_type = None
+        self.headers = None
         self.lines = None
+        self.status = "HTTP/1.1 *".replace("*", StatusEnum[status])
         # Validate type and integrity
         # of payload.
         # Warning:
