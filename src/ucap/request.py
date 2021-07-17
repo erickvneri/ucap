@@ -60,7 +60,6 @@ class Request:
 
         # unpack request and body
         req = tuple(payload.split(_lnsep))
-        print(req)
         if len(req) > 1:
             req, body = req
         else:
