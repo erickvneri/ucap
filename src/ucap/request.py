@@ -50,16 +50,17 @@ class Request:
         self.route = route
 
     @classmethod
-    def from_string(cls, payload: [bytes, str]) -> "Request":
+    def from_string(cls, payload: str) -> "Request":
         # Parse HTTP Request from raw
         # payload and returns a Request
         # object.
-        _colon_sep = b": " if type(payload) is bytes else ": "
-        _qs_sep = b"?" if type(payload) is bytes else "?"
-        _lnsep = b"\n\n" if type(payload) is bytes else "\n\n"
+        _colon_sep = ": "
+        _qs_sep = "?"
+        _lnsep = "\r\n\r\n"
 
         # unpack request and body
         req = tuple(payload.split(_lnsep))
+        print(req)
         if len(req) > 1:
             req, body = req
         else:
