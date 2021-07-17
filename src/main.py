@@ -65,20 +65,23 @@ def main():
     # FIXME: Monkey application route
     @app.route("/about")
     def about(req):
-        print(req.__dict__)
         return templates["about"], 200
 
     # FIXME: Monkey application route
-    @app.route("/setup")
+    @app.route("/wifi-setup")
     def about(req):
-        print(req.__dict__)
-        return templates["setup"], 200
+        return templates["wifi-setup"], 200
 
     # FIXME: Monkey application route
-    @app.route("/metadata")
+    @app.route("/control")
     def metadata(req):
-        print(req.__dict__)
         return templates["xml_example"], 200
+
+    # FIXME: Monkey application route
+    @app.route("/wifi-connect")
+    def wifi_connect(req):
+        print(req.__dict__)
+        return templates["wifi-setup"], 200
 
     # Initialize event loop
     loop = asyncio.get_event_loop()
