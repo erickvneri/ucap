@@ -56,7 +56,7 @@ class Request:
         try:
             res = json.loads(self.body)
         except ValueError as e:
-            print("not a valid JSON payload to decode,", e)
+            print("Warning: not a valid JSON payload to decode,", e)
         else:
             return res
 
