@@ -18,6 +18,8 @@
     }
     p {
       text-align: center;
+      margin-inline: -5em;
+      margin-bottom: 2em;
     }
 
     .navbar {
@@ -34,8 +36,7 @@
     #wifi-setup-form {
       display: flex;
       flex-direction: column;
-      justify-content: ;
-      margin: 1em;
+      margin: 8em;
     }
 
     .form-item {
@@ -43,6 +44,7 @@
       border: 1px solid #2e4753;
       border-radius: 7px;
       font-style: italic;
+      height: 2em;
       padding: 0.5em;
     }
   </style>
@@ -52,10 +54,10 @@
       <a href="/wifi-setup" class="navbar-item">Wifi Setup</a>
       <a href="/control" class="navbar-item">Controller</a>
     </header>
-    <p style="color: #062c3e">Setup your Wifi Credentials</p>
 
     <!-- Wifi Setup Form -->
     <form id="wifi-setup-form">
+      <p style="color: #062c3e">Setup your Wifi Credentials</p>
       <!-- SSID Input -->
       <input
         class="form-item"
@@ -89,29 +91,34 @@
           font-style: normal;
           background-color: #2e4753;
           color: #ccc;
+          height: auto;
         "
       >
-        Connect
+        <strong>Connect</strong>
       </button>
     </form>
+    <!-- Licence footer -->
+    <footer style="text-align: center; font-size: small">
+      Copyright (c) 2021 bardovasco
+    </footer>
 
     <!-- Form script -->
     <script>
+      // On Submit event handler
       const onSubmitForm = async (evt) => {
         const ssidInput = evt.target[0].value;
         const ssidPassword = evt.target[1].value;
-        console.log(ssidInput);
-        console.log(ssidPassword);
         evt.preventDefault();
 
-        fetch("/wifi-connect", {
+        // Send credentials JSON Formatted
+        const res = await fetch("/wifi-connect", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ssid: ssidInput, password: ssidPassword }),
-        })
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
+        });
+        console.log(res);
       };
+      // Subscribe to HTML Form
       const wifiSetupForm = document
         .getElementById("wifi-setup-form")
         .addEventListener("submit", onSubmitForm);
