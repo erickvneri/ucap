@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <style>
+    a {
+      text-decoration: none;
+      color: black;
+    }
+    a:hover {
+      text-decoration: none;
+      color: black;
+    }
+    a:visited {
+      text-decoration: none;
+      color: black;
+    }
+    p {
+      text-align: left;
+    }
+    .navbar {
+      border-bottom: 1px solid black;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+    }
+    .navbar-item {
+      margin: 1em;
+    }
+    .control-cards {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .toggle {
+      position: relative;
+      transform: scale(4.3);
+      transform-origin: 0 0;
+      width: 2em;
+    }
+  </style>
+  <body>
+    <header class="navbar">
+      <a href="/about" class="navbar-item">About</a>
+      <a href="/wifi-setup" class="navbar-item">Wifi Setup</a>
+      <a href="/control" class="navbar-item">Controller</a>
+    </header>
+    <div class="toggle-card">
+      <div>
+        <label for="toggle" />Toggle
+        <br />
+        <a id="toggleSwitch">
+          <input
+            class="toggle"
+            id="switch"
+            min="0"
+            max="1"
+            name="range"
+            type="range"
+          />
+        </a>
+      </div>
+    </div>
+
+    <!-- Licence footer -->
+    <footer style="text-align: center; font-size: small; margin-top: 35em">
+      Copyright (c) 2021 bardovasco
+    </footer>
+  </body>
+</html>

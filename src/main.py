@@ -75,12 +75,13 @@ def main():
     # FIXME: Monkey application route
     @app.route("/control")
     def metadata(req):
-        return templates["xml_example"], 200
+        print(req.get_json())
+        return templates["device-control"], 200
 
     # FIXME: Monkey application route
     @app.route("/wifi-connect")
     def wifi_connect(req):
-        print(req.__dict__)
+        print(req.get_json())
         return templates["wifi-setup"], 200
 
     # Initialize event loop
