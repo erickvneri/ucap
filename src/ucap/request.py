@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+import ujson as json
 
 
 class Request:
@@ -48,6 +49,16 @@ class Request:
         self.path = path
         self.protocol = protocol
         self.route = route
+
+    def get_json(self) -> dict:
+        # Returns a dictionary from
+        # a JSON string
+        try:
+            res = json.loads(self.body)
+        except ValueError as e:
+            print("not a valid JSON payload to decode,", e)
+        else:
+            return res
 
     @classmethod
     def from_string(cls, payload: str) -> "Request":
