@@ -65,17 +65,19 @@ def main():
     # FIXME: Monkey application route
     @app.route("/about")
     def about(req):
+        print(req.__dict__)
         return templates["about"], 200
 
     # FIXME: Monkey application route
     @app.route("/wifi-setup")
     def about(req):
+        print(req.__dict__)
         return templates["wifi-setup"], 200
 
     # FIXME: Monkey application route
     @app.route("/control")
     def metadata(req):
-        print(req.get_json())
+        print(req.__dict__)
         return templates["device-control"], 200
 
     # FIXME: Monkey application route

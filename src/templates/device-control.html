@@ -4,6 +4,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <style>
+    /*  Removing defaults for
+      * ancors and updating
+      * other default tags
+      */
     a {
       text-decoration: none;
       color: black;
@@ -19,6 +23,7 @@
     p {
       text-align: left;
     }
+    /* Shared Navbar style */
     .navbar {
       border-bottom: 1px solid black;
       display: flex;
@@ -28,14 +33,30 @@
     .navbar-item {
       margin: 1em;
     }
-    .control-cards {
+    /* Container, Card and Action */
+    .container {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
+      margin-block: 2em;
+      padding: 0.5em;
     }
-    .toggle {
-      position: relative;
-      transform: scale(4.3);
+    .card {
+      background-color: #2e4753;
+      border: 1px solid #2e4753;
+      border-radius: 12px;
+      height: 5em;
+      margin: 2px;
+      padding: 0.5em;
+      width: 10em;
+    }
+    .card-label {
+      color: #ccc;
+      font-weight: bold;
+    }
+    .action-toggle {
+      background-color: #2e4753;
+      transform: scale(3);
       transform-origin: 0 0;
       width: 2em;
     }
@@ -46,20 +67,22 @@
       <a href="/wifi-setup" class="navbar-item">Wifi Setup</a>
       <a href="/control" class="navbar-item">Controller</a>
     </header>
-    <div class="toggle-card">
-      <div>
-        <label for="toggle" />Toggle
+
+    <!-- Device Control Container -->
+    <div class="container">
+      <!-- Card -->
+      <div class="card">
+        <label for="action-toggle" class="card-label" />Switch
         <br />
-        <a id="toggleSwitch">
-          <input
-            class="toggle"
-            id="switch"
-            min="0"
-            max="1"
-            name="range"
-            type="range"
-          />
-        </a>
+        <input
+          class="action-toggle"
+          id="action-toggle"
+          min="0"
+          max="10"
+          name="range"
+          type="range"
+          value="0"
+        />
       </div>
     </div>
 
@@ -67,5 +90,20 @@
     <footer style="text-align: center; font-size: small; margin-top: 35em">
       Copyright (c) 2021 bardovasco
     </footer>
+
+    <!-- Scripts -->
+    <script>
+      const actionToggle = document.getElementById("action-toggle");
+      actionToggle.oninput = () => handleToggle();
+
+      let handleToggle = () => {
+        if (actionToggle.value < 5) {
+          actionToggle.value = 0;
+        } else {
+          actionToggle.value = 10;
+        }
+        // Fetch server...
+      };
+    </script>
   </body>
 </html>
