@@ -31,5 +31,7 @@ for path in files:
             ext = ".html"
         elif path.endswith(".xml"):
             ext = ".xml"
+        elif path.endswith(".css"):
+            ext = ".css"
         with open("./templates/" + path) as f:
             templates[path.replace(ext, "")] = f.readlines()
