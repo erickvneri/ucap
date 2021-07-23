@@ -2,65 +2,8 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
-  <style>
-    /*  Removing defaults for
-      * ancors and updating
-      * other default tags
-      */
-    a {
-      text-decoration: none;
-      color: black;
-    }
-    a:hover {
-      text-decoration: none;
-      color: black;
-    }
-    a:visited {
-      text-decoration: none;
-      color: black;
-    }
-    p {
-      text-align: left;
-    }
-    /* Shared Navbar style */
-    .navbar {
-      border-bottom: 1px solid black;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-    }
-    .navbar-item {
-      margin: 1em;
-    }
-    /* Container, Card and Action */
-    .container {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      margin-block: 2em;
-      padding: 0.5em;
-    }
-    .card {
-      background-color: #2e4753;
-      border: 1px solid #2e4753;
-      border-radius: 12px;
-      height: 5em;
-      margin: 2px;
-      padding: 0.5em;
-      width: 10em;
-    }
-    .card-label {
-      color: #ccc;
-      font-weight: bold;
-    }
-    .action-toggle {
-      background-color: #2e4753;
-      transform: scale(3);
-      transform-origin: 0 0;
-      width: 2em;
-    }
-  </style>
   <body>
     <header class="navbar">
       <a href="/about" class="navbar-item">About</a>

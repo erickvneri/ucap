@@ -19,19 +19,36 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-import uos as os
+from ucap import uCap
+from templates import templates
 
-templates = {}
-files = os.listdir("./templates")
 
-for path in files:
-    ext = ""
-    if not path.endswith(".py"):
-        if path.endswith(".html"):
-            ext = ".html"
-        elif path.endswith(".xml"):
-            ext = ".xml"
-        elif path.endswith(".css"):
-            ext = ".css"
-        with open("./templates/" + path) as f:
-            templates[path.replace(ext, "")] = f.readlines()
+def create_app():
+    app = uCap()
+
+    # FIXME: Monkey application route
+    @app.route("/styles.css")
+    def styles(req):
+        return templates["styles"], 200
+
+    # FIXME: Monkey application route
+    @app.route("/about")
+    def about(req):
+        return templates["about"], 200
+
+    # FIXME: Monkey application route
+    @app.route("/wifi-setup")
+    def about(req):
+        return templates["wifi-setup"], 200
+
+    # FIXME: Monkey application route
+    @app.route("/wifi-connect")
+    def wifi_connect(req):
+        return templates["wifi-setup"], 200
+
+    # FIXME: Monkey application route
+    @app.route("/control")
+    def metadata(req):
+        return templates["device-control"], 200
+
+    return app

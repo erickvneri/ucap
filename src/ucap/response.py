@@ -38,6 +38,7 @@ class ContentTypeEnum:
     TEXT = "text/plain"
     XML = "application/xml"
     JSON = "application/json"
+    CSS = "text/css"
 
 
 class Response:
@@ -115,6 +116,13 @@ class Response:
             return ContentTypeEnum.XML
         elif "{" == fline[0]:
             return ContentTypeEnum.JSON
+        elif "css" in fline:
+            # TODO: monkey validation
+            # taking firstline comment
+            # on CSS file "/* css */"
+            # There must be a better way
+            # to validate content-type.
+            return ContentTypeEnum.CSS
         return ContentTypeEnum.TEXT
 
     @staticmethod

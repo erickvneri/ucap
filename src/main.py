@@ -23,8 +23,7 @@ import machine
 import network
 import uasyncio as asyncio
 
-from ucap import uCap
-from templates import templates
+from app import create_app
 
 # For the improvement on
 # the security of these
@@ -60,31 +59,7 @@ def wifiap_init():
 
 def main():
     wifiap_init()
-    app = uCap()
-
-    # FIXME: Monkey application route
-    @app.route("/about")
-    def about(req):
-        print(req.__dict__)
-        return templates["about"], 200
-
-    # FIXME: Monkey application route
-    @app.route("/wifi-setup")
-    def about(req):
-        print(req.__dict__)
-        return templates["wifi-setup"], 200
-
-    # FIXME: Monkey application route
-    @app.route("/control")
-    def metadata(req):
-        print(req.__dict__)
-        return templates["device-control"], 200
-
-    # FIXME: Monkey application route
-    @app.route("/wifi-connect")
-    def wifi_connect(req):
-        print(req.get_json())
-        return templates["wifi-setup"], 200
+    app = create_app()
 
     # Initialize event loop
     loop = asyncio.get_event_loop()
