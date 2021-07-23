@@ -29,7 +29,7 @@ def create_app():
     # FIXME: Monkey application route
     @app.route("/styles.css")
     def styles(req):
-        return templates["styles.css"], 200
+        return templates["styles"], 200
 
     # FIXME: Monkey application route
     @app.route("/about")
