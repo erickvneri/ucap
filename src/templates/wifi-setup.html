@@ -2,52 +2,8 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
-  <style>
-    a {
-      text-decoration: none;
-      color: black;
-    }
-    a:hover {
-      text-decoration: none;
-      color: black;
-    }
-    a:visited {
-      text-decoration: none;
-      color: black;
-    }
-    p {
-      text-align: center;
-      margin-inline: -5em;
-      margin-bottom: 2em;
-    }
-
-    .navbar {
-      border-bottom: 1px solid black;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-    }
-
-    .navbar-item {
-      margin: 1em;
-    }
-
-    #wifi-setup-form {
-      display: flex;
-      flex-direction: column;
-      margin: 8em;
-    }
-
-    .form-item {
-      align-self: center;
-      border: 1px solid #2e4753;
-      border-radius: 7px;
-      font-style: italic;
-      height: 2em;
-      padding: 0.5em;
-    }
-  </style>
   <body>
     <header class="navbar">
       <a href="/about" class="navbar-item">About</a>
@@ -57,7 +13,9 @@
 
     <!-- Wifi Setup Form -->
     <form id="wifi-setup-form">
-      <p style="color: #062c3e">Setup your Wifi Credentials</p>
+      <p style="color: #062c3e; margin-inline: -1em">
+        Setup your Wifi Credentials
+      </p>
       <!-- SSID Input -->
       <input
         class="form-item"
@@ -98,9 +56,7 @@
       </button>
     </form>
     <!-- Licence footer -->
-    <footer style="text-align: center; font-size: small; margin-top: 15em">
-      Copyright (c) 2021 bardovasco
-    </footer>
+    <footer>Copyright (c) 2021 bardovasco</footer>
 
     <!-- Form script -->
     <script>
