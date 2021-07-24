@@ -143,10 +143,19 @@ class Response:
         # Content-Lenght HTTP header
         return len("".join(payload))
 
+    # Response helpers #
+    # This may be independent
+    # functions under ucap/helpers/
+    # and will return a Response
+    # object.
     @classmethod
-    def html_template(path: str, status: int):
+    def jsonify(cls, **kwargs):
+        return NotImplemented("TODO: Implement jsonify class function")
+
+    @classmethod
+    def from_template(path: str, status: int):
         return NotImplemented("TODO: Implement html_template class function")
 
     @classmethod
-    def css_template(path: str, status: int):
+    def stylesheet(path: str, status: int):
         return NotImplemented("TODO: Implement css_template class function")
