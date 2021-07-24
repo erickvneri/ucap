@@ -58,7 +58,9 @@ class Response:
     # '\n\n',
     # '{"hello": "world"}'
     # ]
-    def __init__(self, status: int, payload: list):
+    def __init__(
+        self, status: int, payload: list, content_type: ContentTypeEnum = None
+    ):
         self.content_length = None
         self.content_type = None
         self.headers = None
@@ -140,3 +142,11 @@ class Response:
         # the payload to assign proper
         # Content-Lenght HTTP header
         return len("".join(payload))
+
+    @classmethod
+    def html_template(path: str, status: int):
+        return NotImplemented("TODO: Implement html_template class function")
+
+    @classmethod
+    def css_template(path: str, status: int):
+        return NotImplemented("TODO: Implement css_template class function")
