@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+import gc
 import ujson as json
 
 StatusEnum = {
@@ -70,6 +71,17 @@ class Response:
         # hence, try passing a proper
         # payload data as argument
         self.payload = self.validate_payload(payload)
+
+        # Release memory before
+        # build Response object
+        print(gc.mem_alloc())
+        payload = None
+        status = None
+        print(gc.mem_alloc())
+        gc.collect()
+        print(gc.mem_alloc())
+
+        # Build Response object
         self.build()
 
     def build(self):
