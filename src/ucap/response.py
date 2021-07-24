@@ -74,12 +74,9 @@ class Response:
 
         # Release memory before
         # build Response object
-        print(gc.mem_alloc())
         payload = None
         status = None
-        print(gc.mem_alloc())
         gc.collect()
-        print(gc.mem_alloc())
 
         # Build Response object
         self.build()
