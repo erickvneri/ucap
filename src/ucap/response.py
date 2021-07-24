@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+import gc
 import ujson as json
 
 StatusEnum = {
@@ -57,7 +58,9 @@ class Response:
     # '\n\n',
     # '{"hello": "world"}'
     # ]
-    def __init__(self, status: int, payload: list):
+    def __init__(
+        self, status: int, payload: list, content_type: ContentTypeEnum = None
+    ):
         self.content_length = None
         self.content_type = None
         self.headers = None
@@ -70,6 +73,14 @@ class Response:
         # hence, try passing a proper
         # payload data as argument
         self.payload = self.validate_payload(payload)
+
+        # Release memory before
+        # build Response object
+        payload = None
+        status = None
+        gc.collect()
+
+        # Build Response object
         self.build()
 
     def build(self):
@@ -131,3 +142,11 @@ class Response:
         # the payload to assign proper
         # Content-Lenght HTTP header
         return len("".join(payload))
+
+    @classmethod
+    def html_template(path: str, status: int):
+        return NotImplemented("TODO: Implement html_template class function")
+
+    @classmethod
+    def css_template(path: str, status: int):
+        return NotImplemented("TODO: Implement css_template class function")

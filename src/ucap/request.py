@@ -19,6 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+import gc
 import ujson as json
 
 
@@ -50,6 +51,16 @@ class Request:
         self.protocol = protocol
         self.route = route
 
+        # RELEASE args REFERENCE
+        body = None
+        headers = None
+        method = None
+        path = None
+        protocol = None
+        route = None
+        # RUN GARBAGE COLLECTOR
+        gc.collect()
+
     def get_json(self) -> dict:
         # Returns a dictionary from
         # a JSON string
@@ -71,6 +82,10 @@ class Request:
 
         # unpack request and body
         req = tuple(payload.split(_lnsep))
+
+        # RELEASE "payload" REFERENCE
+        payload = None
+
         if len(req) > 1:
             req, body = req
         else:
@@ -79,6 +94,9 @@ class Request:
 
         # split request string
         lns = req.splitlines()
+
+        # RELEASE "req" REFERENCE
+        req = None
 
         # unpack request status
         method, path, protocol = tuple(lns[0].split())
@@ -90,6 +108,9 @@ class Request:
             h = h.split(_colon_sep)
             if len(h) > 1:
                 headers[h[0]] = h[1]
+
+        # RUN GARBAGE COLLECTOR
+        gc.collect()
 
         # return Request instance
         return cls(body, headers, method, path, protocol, route)
