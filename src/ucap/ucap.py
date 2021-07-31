@@ -97,7 +97,7 @@ class uCap:
         request = Request.from_string(req.decode())
         await self._validate_route(res, request.route, request)
 
-    def run(self, addr="0.0.0.0", port=80):
+    def run(self, addr, port):
         # This resourse return the
         # Server class whose handler
         # will be scheduled by the
