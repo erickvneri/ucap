@@ -65,7 +65,7 @@ def main():
     loop = asyncio.get_event_loop()
 
     # Schedule tasks
-    loop.create_task(app.run())
+    loop.create_task(app.run("0.0.0.0", 80))
 
     # initialize loop
     loop.run_forever()
