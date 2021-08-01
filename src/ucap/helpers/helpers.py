@@ -25,14 +25,14 @@ from ucap.response import Response, ContentTypeEnum
 def _read_path_lines(path) -> list:
     # Return an array of file
     # line of the specified path
+    content = None
     try:
         _f = open(path)
     except OSError as e:
         print("Invalid path", e)
-        _f.close()
-        return None
     else:
         content = _f.readlines()
+    finally:
         _f.close()
         return content
 
