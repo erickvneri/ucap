@@ -64,12 +64,6 @@ a:visited {
   color: #ccc;
   font-weight: bold;
 }
-.action-toggle {
-  background-color: #2e4753;
-  transform: scale(3);
-  transform-origin: 0 0;
-  width: 2em;
-}
 
 /*
  * Licence footer
