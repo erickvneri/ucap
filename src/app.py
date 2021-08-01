@@ -21,6 +21,7 @@
 # THE SOFTWARE.
 from ucap import uCap
 from ucap.helpers import from_stylesheet, from_html
+import gc
 
 
 def create_app():
@@ -30,13 +31,6 @@ def create_app():
     @app.route("/styles.css")
     def styles(req):
         return from_stylesheet("templates/styles.css")
-        # return templates["styles"], 200
-
-    # FIXME: Monkey application route
-    @app.route("/about")
-    def about(req):
-        return from_html("templates/about.html")
-        # return templates["about"], 200
 
     # FIXME: Monkey application route
     @app.route("/wifi-setup")
@@ -46,11 +40,12 @@ def create_app():
     # FIXME: Monkey application route
     @app.route("/wifi-connect")
     def wifi_connect(req):
+        print(req.get_json())
         return from_html("templates/wifi-setup.html")
 
     # FIXME: Monkey application route
-    # @app.route("/control")
-    # def metadata(req):
-    # return templates["device-control"], 200
+    @app.route("/control")
+    def control(req):
+        return from_html("templates/device-control.html")
 
     return app
