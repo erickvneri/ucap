@@ -46,9 +46,12 @@ class uCap:
         return decorator
 
     @staticmethod
-    async def _send(res, bufflines, status):
+    async def _send(res, handler_response, status):
         # Build response from input
-        response = Response(status, bufflines)
+        if not isinstance(handler_response, Response):
+            response = Response(status, handler_response)
+        else:
+            response = handler_response
 
         # Send response buffer in lines
         # Warning:
@@ -65,7 +68,12 @@ class uCap:
         # Resource that invokes the
         # route/endpoint handler registered
         # by the uCap.route decorator.
-        handler_response, status = handler(payload)
+        handler_response = handler(payload)
+
+        if isinstance(handler_response, Response):
+            status = handler_response.status
+        else:
+            handler_response, status = handler_response
         return await self._send(res, handler_response, status)
 
     async def _validate_route(self, res, route, payload):

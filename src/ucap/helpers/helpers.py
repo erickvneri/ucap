@@ -19,19 +19,41 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-import uos as os
+from ucap.response import Response, ContentTypeEnum
 
-templates = {}
-files = os.listdir("./templates")
 
-for path in files:
-    ext = ""
-    if not path.endswith(".py"):
-        if path.endswith(".html"):
-            ext = ".html"
-        elif path.endswith(".xml"):
-            ext = ".xml"
-        elif path.endswith(".css"):
-            ext = ".css"
-        with open("./templates/" + path) as f:
-            templates[path.replace(ext, "")] = f.readlines()
+def _read_path_lines(path) -> list:
+    # Return an array of file
+    # line of the specified path
+    content = None
+    try:
+        _f = open(path)
+    except OSError as e:
+        print("Invalid path", e)
+    else:
+        content = _f.readlines()
+    finally:
+        _f.close()
+        return content
+
+
+def from_stylesheet(path: str = None, style: str = None):
+    # Lazyload an HTML template
+    # file and returns a Response
+    # object
+    if path:
+        content = _read_path_lines(path)
+    elif style:
+        content = style.split("\n")
+    return Response(200, content, ContentTypeEnum.CSS)
+
+
+def from_html(path: str = None, html: str = None):
+    # Lazyload an HTML template
+    # file and returns a Response
+    # object
+    if path:
+        content = _read_path_lines(path)
+    elif html:
+        content = html.split("\n")
+    return Response(200, content, ContentTypeEnum.HTML)

@@ -59,10 +59,13 @@ class Response:
     # '{"hello": "world"}'
     # ]
     def __init__(
-        self, status: int, payload: list, content_type: ContentTypeEnum = None
+        self,
+        status: int,
+        payload: [dict, list, str],
+        content_type: ContentTypeEnum = None,
     ):
         self.content_length = None
-        self.content_type = None
+        self.content_type = content_type
         self.headers = None
         self.lines = None
         self.status = "HTTP/1.1 *".replace("*", StatusEnum[status])
@@ -73,7 +76,6 @@ class Response:
         # hence, try passing a proper
         # payload data as argument
         self.payload = self.validate_payload(payload)
-
         # Release memory before
         # build Response object
         payload = None
@@ -87,7 +89,12 @@ class Response:
         # From input, build HTTP Response
         # and update self.lines as a list
         # of lines (splitted buffer)
-        self.content_type = self.set_content_type(self.payload[0])
+
+        if not self.content_type:
+            # Content-Type hasn't been
+            # set through ucap.helpers
+            self.content_type = self.set_content_type(self.payload[0])
+
         self.content_length = self.set_content_lenght(self.payload)
         self.headers = "\n".join(
             [
@@ -127,13 +134,6 @@ class Response:
             return ContentTypeEnum.XML
         elif "{" == fline[0]:
             return ContentTypeEnum.JSON
-        elif "css" in fline:
-            # TODO: monkey validation
-            # taking firstline comment
-            # on CSS file "/* css */"
-            # There must be a better way
-            # to validate content-type.
-            return ContentTypeEnum.CSS
         return ContentTypeEnum.TEXT
 
     @staticmethod
@@ -142,11 +142,3 @@ class Response:
         # the payload to assign proper
         # Content-Lenght HTTP header
         return len("".join(payload))
-
-    @classmethod
-    def html_template(path: str, status: int):
-        return NotImplemented("TODO: Implement html_template class function")
-
-    @classmethod
-    def css_template(path: str, status: int):
-        return NotImplemented("TODO: Implement css_template class function")

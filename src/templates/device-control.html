@@ -6,7 +6,6 @@
   </head>
   <body>
     <header class="navbar">
-      <a href="/about" class="navbar-item">About</a>
       <a href="/wifi-setup" class="navbar-item">Wifi Setup</a>
       <a href="/control" class="navbar-item">Controller</a>
     </header>
@@ -17,15 +16,7 @@
       <div class="card">
         <label for="action-toggle" class="card-label" />Switch
         <br />
-        <input
-          class="action-toggle"
-          id="action-toggle"
-          min="0"
-          max="10"
-          name="range"
-          type="range"
-          value="0"
-        />
+        <input type="color" />
       </div>
     </div>
 
@@ -35,18 +26,6 @@
     </footer>
 
     <!-- Scripts -->
-    <script>
-      const actionToggle = document.getElementById("action-toggle");
-      actionToggle.oninput = () => handleToggle();
-
-      let handleToggle = () => {
-        if (actionToggle.value < 5) {
-          actionToggle.value = 0;
-        } else {
-          actionToggle.value = 10;
-        }
-        // Fetch server...
-      };
-    </script>
+    <script></script>
   </body>
 </html>
