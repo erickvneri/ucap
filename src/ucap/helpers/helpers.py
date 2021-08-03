@@ -54,7 +54,7 @@ def send_html(path=None, *, raw_input=None):
     # object
     if path:
         content = _read_path_lines(path)
-    elif html:
+    elif raw_input:
         content = raw_input.split("\n")
     return Response(200, content, ContentTypeEnum.HTML)
 
@@ -65,6 +65,6 @@ def send_xml(path=None, *, raw_input=None):
     # object
     if path:
         content = _read_path_lines(path)
-    elif html:
+    elif raw_input:
         content = raw_input.split("\n")
     return Response(200, content, ContentTypeEnum.XML)
