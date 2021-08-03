@@ -44,7 +44,7 @@ def send_stylesheet(path=None, *, raw_input=None):
     if path:
         content = _read_path_lines(path)
     elif style:
-        content = style.split("\n")
+        content = raw_input.split("\n")
     return Response(200, content, ContentTypeEnum.CSS)
 
 
@@ -55,7 +55,7 @@ def send_html(path=None, *, raw_input=None):
     if path:
         content = _read_path_lines(path)
     elif html:
-        content = html.split("\n")
+        content = raw_input.split("\n")
     return Response(200, content, ContentTypeEnum.HTML)
 
 
@@ -66,5 +66,5 @@ def send_xml(path=None, *, raw_input=None):
     if path:
         content = _read_path_lines(path)
     elif html:
-        content = html.split("\n")
+        content = raw_input.split("\n")
     return Response(200, content, ContentTypeEnum.XML)
