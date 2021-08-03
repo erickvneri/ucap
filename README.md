@@ -1,28 +1,51 @@
-# lightbulb-lan-esp32
+# uCap
 
-WS2812 / LAN / ESP-WROOM-32 / Micropython
+### Description
 
-Thread Flow pseudo-diagram:
+Embedded microframework written in MicroPython that facilitates
+the development of device web interfaces or backend services through
+readable and shorthand endpoint declarations.
 
-:: Boot thread
+It has been built on top of the MicroPython `uasyncio` module, hence
+the server enabled is a coroutine that must be assigned as a task or
+gathered by the `uasyncio` event loop.
 
-1. `machine.Timer.init` for 300s (5mins)
-2. `AP.active(True)`
+### Usage example:
 
-- If `ap.isconnected`:
-  - Run server
-  - `machine.Timer.deinit`
-- If no STA
-  - Timer triggers
-  - AP and server disabled
+- `uCap` app instance and route definition:
 
-:: App thread
+```python
+from ucap import uCap
+from ucap.helpers import send_stylesheet, send_html, send_xml
 
-1. Check if parent node exists
 
-- If `node_parent`:
-  - Send state notification
-- else:
-  - Don't send notification
+def create_app():
+    app = uCap()
 
-2. `machine.lightsleep([3000ms])`
+    # Fetch stylesheet referenced about
+    # HTML <link> metadata tag
+    @app.route("/styles.css")
+    def styles(req):
+        return send_stylesheet("templates_directory/styles.css")
+
+    # Send a raw <h1> HTML tag
+    @app.route("/hello-world")
+    def hello_world(req):
+        return send_html(raw_input="<h1>Hello world!</h1>")
+
+    # Mock wifi setup
+    # authenticator page
+    @app.route("/wifi-setup")
+    def about(req):
+        return send_html("templates_directory/wifi-setup.html")
+
+    # wifi authenticator handler
+    # which will only print
+    # the JSON payload received
+    @app.route("/wifi-connect")
+    def wifi_connect(req):
+        print(req.get_json())
+        return send_html("templates_directory/wifi-setup.html")
+
+    return app
+```
