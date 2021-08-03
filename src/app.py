@@ -20,32 +20,39 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 from ucap import uCap
-from ucap.helpers import from_stylesheet, from_html
-import gc
+from ucap.helpers import send_stylesheet, send_html, send_xml
 
 
 def create_app():
     app = uCap()
 
-    # FIXME: Monkey application route
+    # Example route that returns
+    # stylesheet template that has
+    # been referenced on <link> HTML
+    # tag.
     @app.route("/styles.css")
     def styles(req):
-        return from_stylesheet("templates/styles.css")
+        return send_stylesheet("mock_templates/styles.css")
 
-    # FIXME: Monkey application route
     @app.route("/wifi-setup")
     def about(req):
-        return from_html("templates/wifi-setup.html")
+        return send_html("mock_templates/wifi-setup.html")
 
-    # FIXME: Monkey application route
     @app.route("/wifi-connect")
     def wifi_connect(req):
         print(req.get_json())
-        return from_html("templates/wifi-setup.html")
+        return send_html("mock_templates/wifi-setup.html")
 
-    # FIXME: Monkey application route
     @app.route("/control")
     def control(req):
-        return from_html("templates/device-control.html")
+        return send_html("mock_templates/device-control.html")
+
+    @app.route("/xml")
+    def xml(req):
+        return send_xml("mock_templates/xml_example.xml")
+
+    @app.route("/hello-world")
+    def hello_world(req):
+        return send_html(raw_input="<h1>Hello world!</h1>")
 
     return app

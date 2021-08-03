@@ -37,23 +37,34 @@ def _read_path_lines(path) -> list:
         return content
 
 
-def from_stylesheet(path: str = None, style: str = None):
+def send_stylesheet(path=None, *, raw_input=None):
     # Lazyload an HTML template
     # file and returns a Response
     # object
     if path:
         content = _read_path_lines(path)
     elif style:
-        content = style.split("\n")
+        content = raw_input.split("\n")
     return Response(200, content, ContentTypeEnum.CSS)
 
 
-def from_html(path: str = None, html: str = None):
+def send_html(path=None, *, raw_input=None):
     # Lazyload an HTML template
     # file and returns a Response
     # object
     if path:
         content = _read_path_lines(path)
-    elif html:
-        content = html.split("\n")
+    elif raw_input:
+        content = raw_input.split("\n")
     return Response(200, content, ContentTypeEnum.HTML)
+
+
+def send_xml(path=None, *, raw_input=None):
+    # Lazyload an XML template
+    # file and returns a Response
+    # object
+    if path:
+        content = _read_path_lines(path)
+    elif raw_input:
+        content = raw_input.split("\n")
+    return Response(200, content, ContentTypeEnum.XML)
