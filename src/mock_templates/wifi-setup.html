@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <a href="/wifi-setup" class="navbar-item">Wifi Setup</a>
+      <a href="/control" class="navbar-item">Controller</a>
+    </header>
+
+    <!-- Wifi Setup Form -->
+    <form id="wifi-setup-form">
+      <p style="color: #062c3e; margin-inline: -1em">
+        Setup your Wifi Credentials
+      </p>
+      <!-- SSID Input -->
+      <input
+        class="form-item"
+        id="ssid-input"
+        name="ssid-input"
+        placeholder="Network SSID"
+        required
+        type="text"
+        style="width: 19em"
+      />
+      <br />
+
+      <!-- SSID Password Input -->
+      <input
+        class="form-item"
+        id="ssid-password"
+        name="ssid-password"
+        placeholder="Password"
+        required
+        type="password"
+        style="width: 19em"
+      />
+      <br />
+
+      <!-- Submit button -->
+      <button
+        class="form-item"
+        type="submit"
+        style="
+          width: 12em;
+          font-style: normal;
+          background-color: #2e4753;
+          color: white;
+          height: 3em;
+        "
+      >
+        <strong>Connect</strong>
+      </button>
+    </form>
+    <!-- Licence footer -->
+    <footer>Copyright (c) 2021 bardovasco</footer>
+
+    <!-- Form script -->
+    <script>
+      // On Submit event handler
+      const onSubmitForm = async (evt) => {
+        const ssidInput = evt.target[0].value;
+        const ssidPassword = evt.target[1].value;
+        evt.preventDefault();
+
+        // Send credentials JSON Formatted
+        const res = await fetch("/wifi-connect", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ssid: ssidInput, password: ssidPassword }),
+        });
+        console.log(res);
+      };
+      // Subscribe to HTML Form
+      const wifiSetupForm = document
+        .getElementById("wifi-setup-form")
+        .addEventListener("submit", onSubmitForm);
+    </script>
+  </body>
+</html>
