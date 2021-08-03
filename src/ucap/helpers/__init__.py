@@ -1,1 +1,1 @@
-from .helpers import from_html, from_stylesheet
+from .helpers import send_html, send_stylesheet, send_xml
